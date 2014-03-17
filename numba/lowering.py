@@ -10,6 +10,12 @@ try:
 except ImportError:
     import __builtin__ as builtins
 
+class FakeModule:
+
+    def __init__(self):
+        self.__name__ = 'unknown'
+
+
 
 class LoweringError(Exception):
     def __init__(self, msg, loc):
@@ -32,7 +38,7 @@ class FunctionDescriptor(object):
                  restype, calltypes, args, kws, mangler=None, argtypes=None,
                  qualname=None):
         self.native = native
-        self.pymod = pymod
+        self.pymod = pymod if pymod is not None else FakeModule()
         self.name = name
         self.doc = doc
         self.blocks = blocks
